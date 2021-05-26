@@ -1,38 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
 .App {
-  text-align: center;
+  margin: 0;
+  padding: 0;
+  background-color: #dcdcdc;
+  font-family: "Poppins", sans-serif;
+  align-content: center;
+  align-items: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 15px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: grid;
+  place-content: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.stats {
+  background-color: white;
+  border-radius: 25px;
+  width: 80vw;
+  height: 80vh;
+  font-family: "Roboto", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  position: relative;
+  z-index: 1;
 }
 
-.App-link {
-  color: #61dafb;
+.graficos {
+  display: grid;
+  place-content: center;
+  width: 90%;
+  height: 80%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.fecharModal {
+  all: unset;
+  position: absolute;
+  cursor: pointer;
+  top: 10px;
+  right: 20px;
+  font-size: 40px;
+}
+
+.esconder {
+  display: none;
 }
