@@ -9,7 +9,7 @@ import { Button } from '@material-ui/core';
 import { abi } from "./utils/abi";
 
 const web3 = new Web3(
-  new Web3.providers.HttpProvider("http://localhost:7545")
+  new Web3.providers.HttpProvider("http://localhost:8545")
 );
 
 function App() {
