@@ -1,37 +1,28 @@
 import './App.css';
 import { withAuthenticator } from '@aws-amplify/ui-react'
-import { useEffect, useState } from 'react';
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Form from "./components/Form";
+import { useEffect } from 'react';
 import Web3 from "web3";
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import * as abi from "./utils/abi.json";
 import { getAdministrador } from "./graphql/queries";
-import { Button, Card, CardActions, CardContent, CardHeader, CircularProgress, List, ListItem, ListItemText, Tooltip } from '@material-ui/core';
-import QRCode from "qrcode.react";
+import { createAdministrador } from "./graphql/mutations";
+import { Button } from '@material-ui/core';
+import { abi } from "./utils/abi";
 
 const web3 = new Web3(
-  new Web3.providers.HttpProvider("http://localhost:8545")
+  new Web3.providers.HttpProvider("http://localhost:7545")
 );
 
 function App() {
-
-  const [ userData, setUserData ] = useState(null);
-  const [ dose1, setDose1 ] = useState(null);
-  const [ dose2, setDose2 ] = useState(null);
-  const [modalAberto, setModalAberto] = useState(false);
-  const [ userId, setUserId ] = useState(null);
-  const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
 
       const currentUser = await Auth.currentAuthenticatedUser({ bypassCache: true });
+      let userData;
 
       if (currentUser) {
 
-        setUserId(currentUser.attributes.sub);
+        console.log("USER_ID: ", currentUser.attributes.sub);
 
         const apiResponse = await API.graphql(
           graphqlOperation(
@@ -42,33 +33,49 @@ function App() {
           )
         );
 
-        setUserData(apiResponse.data.getAdministrador);
+        userData = apiResponse.data.getAdministrador;
 
-        if ( userData ) {
+        console.log("USER_DATA: ", userData);
 
-          const contrato = new web3.eth.Contract(abi, userData.address);
+        if ( !userData ) {
+
+          const newAccount = web3.eth.accounts.create();
+          const contrato = new web3.eth.Contract(abi, '0x9ba6865f4aF93a62DAcF0CAEFA0D3fb7dFc82E4b');
+          const cfm = `${Math.floor(Math.random() * 10001)}`;
+
+          userData = {
+            id: currentUser.attributes.sub,
+            address: newAccount.address,
+            nome: `Administrador_${Math.floor(Math.random() * 101)}`,
+            cpf: '70863586147',
+            cfm
+          };
+
+          await API.graphql(
+            graphqlOperation(
+                createAdministrador,
+                {
+                    input: {
+                      ...userData
+                    }
+                }
+            )
+          );
+
+          console.log("SALVO NO BD");
 
           await contrato.methods
-            .timestampPrimeiraDose()
-            .call({ from: userData.address })
+            .cadastrarAdministrador(cfm, true)
+            .call({ from: newAccount.address })
             .catch(e => console.log(e))
             .then(result => {
-              setDose1(Number(result));
+              console.log("Contract result: ", result.toString());
             });
 
-          await contrato.methods
-            .timestampSegundaDose()
-            .call({ from: userData.address })
-            .catch(e => console.log(e))
-            .then(result => {
-              setDose2(Number(result));
-            });
         }
 
         console.log(userData);
       }
-
-      setLoading(false);
     };
 
     fetchUser();
@@ -76,10 +83,6 @@ function App() {
 
   const logout = async () => {
     try {
-      setUserData(null);
-      setDose1(null);
-      setDose2(null);
-      setUserId(null);
       await Auth.signOut();
       window.location.reload();
     } catch (error) {
@@ -87,53 +90,16 @@ function App() {
     }
   };
 
+  // cadastrarAdministrador(address admin, string calldata cfm, bool ativo)
+  // cadastrarCidadao(address cidadao)
+  // addDocumento(address cidadao, address ipfs)
+  // getDocumentos(address cidadao, uint timestamp)
+  // getHistoricoDatasVacinas(address cidadao, uint timestamp)
+  // aplicarPrimeiraDose(uint timestamp, address cidadao)
+  // aplicarSegundaDose(uint timestamp, address cidadao)
   return (
     <div className="App">
-      <div className={modalAberto ? "overlay" : "esconder"}>
-        <div className='stats'>
-          <button onClick={() => setModalAberto(false)} className='fecharModal'>
-            &times;
-          </button>
-          <Form
-            userId={userId}
-            setModalAberto={setModalAberto}
-          />
-        </div>
-      </div>
-      <Header
-        setModalAberto={setModalAberto}
-        registered={!!userData}
-        logout={logout}
-      />
-      { loading && <CircularProgress /> }
-      { !loading && !!userData && <main>
-          <Card>
-            <CardHeader
-              title={userData ? userData.name : ""}
-              subheader={userData ? userData.cpf : ""}
-            />
-            <CardContent>
-              <QRCode value={userData.address} />
-              <List>
-                <ListItem>
-                  <ListItemText primary="Primeira dose" secondary={userData && dose1 ? dose1 : "Ainda nada"} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="Primeira dose" secondary={userData && dose2 ? dose2 : "Ainda nada"} />
-                </ListItem>
-              </List>
-            </CardContent>
-            <CardActions>
-              <Tooltip title="Copiar endereço">
-                <Button size="small" color="primary" onClick={navigator.clipboard.writeText(userData ? userData.address : "")}>
-                  {userData ? userData.address : ""}
-                </Button>
-              </Tooltip>
-            </CardActions>
-          </Card>
-        </main>
-      }
-      <Footer />
+      <Button onClick={logout}>LOGOUT</Button>
     </div>
   );
 }
