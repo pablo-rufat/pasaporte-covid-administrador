@@ -1,0 +1,14 @@
+footer {
+  text-align: center;
+  background-color: cornflowerblue;
+  padding: 15px 0;
+  font-family: "Roboto", sans-serif;
+  width: 100vw;
+  box-sizing: border-box;
+}
+
+footer p {
+  margin: 0;
+  padding: 0;
+  color: white;
+}

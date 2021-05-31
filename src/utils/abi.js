@@ -1,210 +1,230 @@
 export const abi = [
   {
-    "inputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    inputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "constructor",
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "totalPrimeiraDose",
-    "outputs": [
+    constant: true,
+    inputs: [],
+    name: "totalPrimeiraDose",
+    outputs: [
       {
-        "internalType": "uint32",
-        "name": "",
-        "type": "uint32"
-      }
+        internalType: "uint32",
+        name: "",
+        type: "uint32",
+      },
     ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
+    payable: false,
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "totalSegundaDose",
-    "outputs": [
+    constant: true,
+    inputs: [],
+    name: "totalSegundaDose",
+    outputs: [
       {
-        "internalType": "uint32",
-        "name": "",
-        "type": "uint32"
-      }
+        internalType: "uint32",
+        name: "",
+        type: "uint32",
+      },
     ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
+    payable: false,
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "constant": false,
-    "inputs": [
+    constant: false,
+    inputs: [
       {
-        "internalType": "address",
-        "name": "admin",
-        "type": "address"
+        internalType: "address",
+        name: "admin",
+        type: "address",
       },
       {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "timestamp",
+        type: "uint256",
+      },
     ],
-    "name": "permitirAdministrador",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "permitirAdministrador",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "constant": false,
-    "inputs": [
+    constant: false,
+    inputs: [
       {
-        "internalType": "string",
-        "name": "cfm",
-        "type": "string"
+        internalType: "string",
+        name: "cfm",
+        type: "string",
       },
       {
-        "internalType": "bool",
-        "name": "ativo",
-        "type": "bool"
-      }
+        internalType: "bool",
+        name: "ativo",
+        type: "bool",
+      },
     ],
-    "name": "cadastrarAdministrador",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "cadastrarAdministrador",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "cidadao",
-        "type": "address"
-      }
-    ],
-    "name": "cadastrarCidadao",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
+    constant: false,
+    inputs: [],
+    name: "cadastrarCidadao",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "constant": false,
-    "inputs": [
+    constant: false,
+    inputs: [
       {
-        "internalType": "address",
-        "name": "cidadao",
-        "type": "address"
+        internalType: "address",
+        name: "cidadao",
+        type: "address",
       },
       {
-        "internalType": "address",
-        "name": "ipfs",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "ipfs",
+        type: "address",
+      },
     ],
-    "name": "addDocumento",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "addDocumento",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "constant": true,
-    "inputs": [
+    constant: true,
+    inputs: [
       {
-        "internalType": "address",
-        "name": "cidadao",
-        "type": "address"
+        internalType: "address",
+        name: "cidadao",
+        type: "address",
       },
       {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "timestamp",
+        type: "uint256",
+      },
     ],
-    "name": "getDocumentos",
-    "outputs": [
+    name: "getDocumentos",
+    outputs: [
       {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
+        internalType: "address[]",
+        name: "",
+        type: "address[]",
+      },
     ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
+    payable: false,
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "constant": true,
-    "inputs": [
+    constant: true,
+    inputs: [
       {
-        "internalType": "address",
-        "name": "cidadao",
-        "type": "address"
+        internalType: "address",
+        name: "cidadao",
+        type: "address",
       },
       {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "timestamp",
+        type: "uint256",
+      },
     ],
-    "name": "getHistoricoDatasVacinas",
-    "outputs": [
+    name: "getHistoricoDatasVacinas",
+    outputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
+    payable: false,
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "constant": false,
-    "inputs": [
+    constant: true,
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
+        internalType: "address",
+        name: "cidadao",
+        type: "address",
       },
       {
-        "internalType": "address",
-        "name": "cidadao",
-        "type": "address"
-      }
+        internalType: "uint256",
+        name: "timestamp",
+        type: "uint256",
+      },
     ],
-    "name": "aplicarPrimeiraDose",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "getTimestampVac1",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "constant": false,
-    "inputs": [
+    constant: false,
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
+        internalType: "uint256",
+        name: "timestamp",
+        type: "uint256",
       },
       {
-        "internalType": "address",
-        "name": "cidadao",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "cidadao",
+        type: "address",
+      },
     ],
-    "name": "aplicarSegundaDose",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  }
+    name: "aplicarPrimeiraDose",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "timestamp",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "cidadao",
+        type: "address",
+      },
+    ],
+    name: "aplicarSegundaDose",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
 ];
