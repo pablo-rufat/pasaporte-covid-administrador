@@ -13,7 +13,11 @@
 }
 
 .main {
-  max-width: 40vw;
+  width: 30vw;
+}
+
+.inputWidth {
+  width: 100%;
 }
 
 .main p {
@@ -23,10 +27,47 @@
 
 .buscaEnd {
   display: flex;
-  gap: 10px;
   align-items: flex-end;
+  width: 100%;
 }
 
-.teste {
-  padding: 20px;
+.cameraIcon {
+  margin-left: 20px;
+}
+
+.cardWidth {
+  padding: 0 20px;
+  position: relative;
+}
+
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: grid;
+  place-content: center;
+}
+
+.botaoVacina {
+  width: 100%;
+}
+
+.searchMobile {
+  display: none;
+  width: 0;
+}
+
+@media (max-width: 414px) {
+  .main {
+    width: calc(100% - 2 * 20px);
+    padding: 0 20px;
+  }
+
+  .searchMobile {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+  }
 }
