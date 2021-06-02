@@ -51,7 +51,7 @@ function App() {
         bypassCache: true,
       });
 
-      if (currentUser) {
+      if (currentUser && !user) {
         const apiResponse = await API.graphql(
           graphqlOperation(getAdministrador, {
             id: currentUser.attributes.sub,
@@ -72,8 +72,9 @@ function App() {
       }
       setLoading(false);
     };
-
-    fetchUser();
+    if (!user) {
+      fetchUser();
+    }
   }, []);
 
   useEffect(() => {
@@ -164,8 +165,9 @@ function App() {
   };
 
   const searchUser = async e => {
-    setSearchFinished(false);
     if (e.key !== "Enter") return;
+    setSearchFinished(false);
+    console.log(erroPerm);
     setLoading(true);
     let entrada = e.target.value;
     if (entrada.length === 0) {
@@ -179,17 +181,16 @@ function App() {
       } else if (entrada.length === 42) {
         const momento = new Date();
         console.log(user.address, entrada);
-        try {
-          const vacinas = await contrato.methods
-            .getHistoricoDatasVacinas(entrada, momento.getTime())
-            .call({ from: user.address });
-          setVacinas([Number(vacinas[0]), Number(vacinas[1])]);
-          setErroPerm(false);
-          setSearchFinished(true);
-        } catch (error) {
-          setErroPerm(true);
-          console.log(error);
-        }
+        const vacinas = await contrato.methods
+          .getHistoricoDatasVacinas(entrada, momento.getTime())
+          .call({ from: user.address })
+          .catch(e => {
+            setErroPerm(true);
+            console.log(e);
+          });
+        setVacinas([Number(vacinas[0]), Number(vacinas[1])]);
+        setErroPerm(false);
+        setSearchFinished(true);
       } else {
         console.log("erro");
         setErroPerm(true);
@@ -203,6 +204,8 @@ function App() {
 
   const aplicarDose = async tipo => {
     setLoading(true);
+    const contas = await web3.eth.getAccounts();
+    console.log(contas.some(item => item === user.address));
     await web3.eth.personal.unlockAccount(user.address, user.nome, 10000);
     if (tipo === "dose1") {
       try {
@@ -252,42 +255,6 @@ function App() {
     getTime();
   }, [dataToggle]);
 
-  const searchMobile = async () => {
-    setSearchFinished(false);
-    setLoading(true);
-    if (endereco.length === 0) {
-      setErroPerm(false);
-      setLoading(false);
-      return;
-    }
-    try {
-      if (endereco.length === 14 || endereco.length === 11) {
-        const cpf = endereco.replace(".", "").replace(".", "").replace("-", "");
-      } else if (endereco.length === 42) {
-        const momento = new Date();
-        //console.log(user.address, endereco);
-        try {
-          const vacinas = await contrato.methods
-            .getHistoricoDatasVacinas(endereco, momento.getTime())
-            .call({ from: user.address });
-          setVacinas([Number(vacinas[0]), Number(vacinas[1])]);
-          setErroPerm(false);
-          setSearchFinished(true);
-        } catch (error) {
-          setErroPerm(true);
-          console.log(error);
-        }
-      } else {
-        console.log("erro");
-        setErroPerm(true);
-      }
-    } catch (error) {
-      console.log(error);
-      setErroPerm(true);
-    }
-    setLoading(false);
-  };
-
   // cadastrarAdministrador(address admin, string calldata cfm, bool ativo)
   // cadastrarCidadao(address cidadao)
   // addDocumento(address cidadao, address ipfs)
@@ -330,10 +297,7 @@ function App() {
                 />
                 <PhotoCameraIcon className='cameraIcon' />
               </div>
-              <Button className='searchMobile' onClick={searchMobile}>
-                Buscar
-              </Button>
-              {erroPerm && searchFinished && (
+              {erroPerm && (
                 <>
                   <br />
                   <MuiAlert elevation={6} variant='filled' severity='error'>
