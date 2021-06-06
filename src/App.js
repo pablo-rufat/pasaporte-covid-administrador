@@ -1,6 +1,6 @@
 import "./App.css";
 import { withAuthenticator } from "@aws-amplify/ui-react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Web3 from "web3";
 import { Auth, API, graphqlOperation } from "aws-amplify";
 import { getAdministrador } from "./graphql/queries";
@@ -40,13 +40,11 @@ function App() {
   const [endereco, setEndereco] = useState("");
   const [dataToggle, setDataToggle] = useState(false);
   const [searchFinished, setSearchFinished] = useState(false);
-  const inputRef = useRef();
 
   useEffect(() => {
-    setLoading(true);
-    setErroVacina("");
     const fetchUser = async () => {
       setLoading(true);
+      setErroVacina("");
       const currentUser = await Auth.currentAuthenticatedUser({
         bypassCache: true,
       });
@@ -112,7 +110,7 @@ function App() {
           cfm,
         };
 
-        console.log(userData);
+        //console.log(userData);
 
         await API.graphql(
           graphqlOperation(createAdministrador, {
@@ -120,12 +118,12 @@ function App() {
               ...userData,
             },
           })
-        );
+        ).catch(console.log);
 
         console.log("SALVO NO BD");
 
         try {
-          console.log(userData);
+          //console.log(userData);
           await web3.eth.personal
             .unlockAccount(newAccount, nome, 10000)
             .catch(console.log);
@@ -141,14 +139,14 @@ function App() {
         setUser(userData);
       }
     };
-
-    saveDB();
+    if (!user) {
+      saveDB();
+    }
   }, [addUser]);
 
   const logout = async () => {
     setLoading(true);
     try {
-      await Auth.signOut();
       setUser(null);
       setAddUser(false);
       setVacinas([0, 0]);
@@ -157,9 +155,11 @@ function App() {
       setEndereco("");
       setDataToggle(false);
       setSearchFinished(false);
+      await Auth.signOut();
       window.location.reload();
     } catch (error) {
       console.log("error signing out: ", error);
+      setLoading(false);
     }
     setLoading(false);
   };
@@ -169,6 +169,7 @@ function App() {
     setSearchFinished(false);
     console.log(erroPerm);
     setLoading(true);
+    setErroVacina("");
     let entrada = e.target.value;
     if (entrada.length === 0) {
       setErroPerm(false);
@@ -204,9 +205,16 @@ function App() {
 
   const aplicarDose = async tipo => {
     setLoading(true);
+    setErroVacina("");
+    if (endereco === user.address) {
+      setErroVacina("Você não pode registrar vacina para você mesmo.");
+      setLoading(false);
+      return;
+    }
     const contas = await web3.eth.getAccounts();
     console.log(contas.some(item => item === user.address));
     await web3.eth.personal.unlockAccount(user.address, user.nome, 10000);
+
     if (tipo === "dose1") {
       try {
         const momento = new Date().getTime();
@@ -291,11 +299,9 @@ function App() {
                   onKeyPress={searchUser}
                   id='standard-basic'
                   label='Endereço'
-                  ref={inputRef}
                   value={endereco}
                   onChange={e => setEndereco(e.target.value)}
                 />
-                <PhotoCameraIcon className='cameraIcon' />
               </div>
               {erroPerm && (
                 <>
@@ -375,3 +381,5 @@ function App() {
 }
 
 export default withAuthenticator(App);
+
+//<PhotoCameraIcon className='cameraIcon' />

@@ -8,7 +8,9 @@ export default function Header({ logout }) {
         <i className='fas fa-virus-slash'></i>
         <h3>Passaporte Covid</h3>
       </div>
-      <Button onClick={logout}>LOGOUT</Button>
+      <Button style={{ color: "white" }} onClick={logout}>
+        LOGOUT
+      </Button>
     </header>
   );
 }

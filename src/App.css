@@ -54,20 +54,9 @@
   width: 100%;
 }
 
-.searchMobile {
-  display: none;
-  width: 0;
-}
-
 @media (max-width: 414px) {
   .main {
     width: calc(100% - 2 * 20px);
     padding: 0 20px;
-  }
-
-  .searchMobile {
-    display: block;
-    width: 100%;
-    margin-top: 5px;
   }
 }
