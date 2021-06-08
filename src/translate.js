@@ -1,0 +1,33 @@
+import { I18n } from "aws-amplify";
+import { Translations } from "@aws-amplify/ui-components";
+
+I18n.putVocabulariesForLanguage("pt-BR", {
+  [Translations.SIGN_IN_HEADER_TEXT]: "Passaporte Covid Cidadão",
+  [Translations.SIGN_IN_ACTION]: "Entrar",
+  [Translations.USERNAME_LABEL]: "Usuário *",
+  [Translations.PASSWORD_LABEL]: "Senha *",
+  [Translations.USERNAME_PLACEHOLDER]: "Insira seu usuário",
+  [Translations.PASSWORD_PLACEHOLDER]: "Insira sua senha",
+  [Translations.FORGOT_PASSWORD_TEXT]: "Esqueceu a senha?",
+  [Translations.RESET_PASSWORD_TEXT]: "Recuperar",
+  [Translations.NO_ACCOUNT_TEXT]: "Ainda não é cadastrado?",
+  [Translations.CREATE_ACCOUNT_TEXT]: "Cadastrar agora",
+  [Translations.SIGN_UP_USERNAME_PLACEHOLDER]: "Usuário",
+  [Translations.SIGN_UP_PASSWORD_PLACEHOLDER]: "Senha",
+  [Translations.SIGN_UP_HEADER_TEXT]: "Criar uma nova conta",
+  [Translations.SIGN_UP_HAVE_ACCOUNT_TEXT]: "Já possui uma conta?",
+  [Translations.SIGN_UP_SUBMIT_BUTTON_TEXT]: "Cadastrar",
+  [Translations.EMAIL_LABEL]: "Email *",
+  [Translations.SIGN_UP_EMAIL_PLACEHOLDER]: "Email",
+  [Translations.PHONE_LABEL]: "Telefone",
+  [Translations.PHONE_PLACEHOLDER]: "(71) 98765-4321",
+  [Translations.SIGN_IN_TEXT]: "Entrar",
+  [Translations.CONFIRM_SIGN_UP_HEADER_TEXT]: "Verificar Cadastro",
+  [Translations.CONFIRM_SIGN_UP_CODE_LABEL]: "Código de Confirmação",
+  [Translations.CONFIRM_SIGN_UP_CODE_PLACEHOLDER]: "Insira o código",
+  [Translations.CONFIRM_SIGN_UP_LOST_CODE]: "Não recebeu o código?",
+  [Translations.CONFIRM_SIGN_UP_RESEND_CODE]: "Reenviar",
+  [Translations.BACK_TO_SIGN_IN]: "Voltar",
+  [Translations.CONFIRM_SIGN_UP_SUBMIT_BUTTON_TEXT]: "Verificar",
+  [Translations.CONFIRM]: "Verificar",
+});
