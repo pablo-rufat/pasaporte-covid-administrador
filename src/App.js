@@ -27,7 +27,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 
-const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
+const web3 = new Web3(new Web3.providers.HttpProvider("http://3.80.126.126:8545"));
 const contrato = new web3.eth.Contract(abi, contractAddress.address);
 
 function App() {
