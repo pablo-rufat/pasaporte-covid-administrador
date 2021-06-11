@@ -1,0 +1,7 @@
+type Administrador @model {
+  id: ID!
+  address: String
+  nome: String
+  cpf: String
+  cfm: String
+}

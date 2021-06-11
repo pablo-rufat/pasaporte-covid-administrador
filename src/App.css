@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+.App {
+  margin: 0;
+  padding: 0;
+  background-color: #dcdcdc;
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main {
+  width: 30vw;
+  margin: 20px 0;
+}
+
+.inputWidth {
+  width: 100%;
+}
+
+.main p {
+  margin: 0;
+  padding: 0;
+}
+
+.buscaEnd {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.cameraIcon {
+  margin-left: 20px;
+}
+
+.cardWidth {
+  padding: 0 20px;
+  position: relative;
+}
+
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: grid;
+  place-content: center;
+}
+
+.botaoVacina {
+  width: 100%;
+}
+
+@media (max-width: 414px) {
+  .main {
+    width: calc(100% - 2 * 20px);
+    padding: 0 20px;
+  }
+}
