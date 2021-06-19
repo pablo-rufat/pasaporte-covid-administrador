@@ -22,18 +22,18 @@ import {
   CardActions,
   Tooltip,
   Grid,
-  Link
+  Link,
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { ipfs } from "./ipfs";
-import { styled } from '@material-ui/core/styles';
+import { styled } from "@material-ui/core/styles";
 import axios from "axios";
-import fileDownload  from "js-file-download";
+import fileDownload from "js-file-download";
 
-const Input = styled('input')({
-  display: 'none',
+const Input = styled("input")({
+  display: "none",
 });
 
 const web3 = new Web3(new Web3.providers.HttpProvider(`http://localhost:8545`));
@@ -50,9 +50,10 @@ function App() {
   const [endereco, setEndereco] = useState("");
   const [dataToggle, setDataToggle] = useState(false);
   const [searchFinished, setSearchFinished] = useState(false);
-	const [selectedFile, setSelectedFile] = useState({});
-	const [isFilePicked, setIsFilePicked] = useState(false);
-	const [historyArray, setHistoryArray] = useState([]);
+  const [selectedFile, setSelectedFile] = useState({});
+  const [isFilePicked, setIsFilePicked] = useState(false);
+  const [historyArray, setHistoryArray] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -180,7 +181,6 @@ function App() {
   const searchUser = async e => {
     if (e.key !== "Enter") return;
     setSearchFinished(false);
-    console.log(erroPerm);
     setLoading(true);
     setErroVacina("");
     let entrada = e.target.value;
@@ -216,15 +216,15 @@ function App() {
     setLoading(false);
   };
 
-	const changeHandler = (event) => {
-		setSelectedFile(event.target.files[0]);
-		setIsFilePicked(true);
+  const changeHandler = event => {
+    setSelectedFile(event.target.files[0]);
+    setIsFilePicked(true);
     console.log(event.target.files[0]);
     console.log(selectedFile);
     console.log(isFilePicked);
     console.log(endereco);
     // addDocument();
-	};
+  };
 
   const addDocument = async () => {
     setLoading(true);
@@ -241,7 +241,6 @@ function App() {
     }
 
     try {
-
       await web3.eth.personal.unlockAccount(user.address, user.nome, 10000);
 
       const added = await ipfs.add(selectedFile);
@@ -251,30 +250,30 @@ function App() {
 
       await contrato.methods
         .addDocumento(endereco, added.path)
-        .send({ from: user.address, gas:6721970 });
-
+        .send({ from: user.address, gas: 6721970 });
+      setIsFilePicked(false);
+      setSelectedFile({});
     } catch (error) {
       console.log(error);
     }
     setLoading(false);
   };
 
-  const downloadFile = async (hash) => {
-
-    await axios.request({
-      method: 'POST',
-      url: `http://127.0.0.1:5001/api/v0/get?arg=${hash}`,
-      responseType: 'arraybuffer',
-      responseEncoding: 'binary'
-    })
-    .then(function (response) {
-      const newBuffer = response.data.slice(46);
-      fileDownload(newBuffer, 'historico.pdf');
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
+  const downloadFile = async hash => {
+    await axios
+      .request({
+        method: "POST",
+        url: `http://127.0.0.1:5001/api/v0/get?arg=${hash}`,
+        responseType: "arraybuffer",
+        responseEncoding: "binary",
+      })
+      .then(function (response) {
+        const newBuffer = response.data.slice(46);
+        fileDownload(newBuffer, "historico.pdf");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const getHistorico = async () => {
@@ -291,7 +290,6 @@ function App() {
         });
 
       setHistoryArray(result);
-
     } catch (error) {
       console.log(error);
     }
@@ -432,16 +430,61 @@ function App() {
               )}
               {searchFinished && (
                 <Button
-                    className='botaoHistorico'
-                    color='primary'
-                    onClick={() => getHistorico()}
-                  >
-                    Historico medico
+                  className='botaoHistorico'
+                  color='primary'
+                  onClick={() => {
+                    getHistorico();
+                    setShowHistory(prev => !prev);
+                  }}
+                >
+                  Historico medico
                 </Button>
               )}
-              {historyArray.map((value, index) => {
-                return <Link key={index} href="#" onClick={() => {downloadFile(value);}}> {value} </Link>
-              })}
+              {showHistory &&
+                historyArray.map((value, index) => {
+                  return (
+                    <Link
+                      key={index}
+                      href='#'
+                      onClick={() => {
+                        downloadFile(value);
+                      }}
+                    >
+                      {" "}
+                      {value}{" "}
+                    </Link>
+                  );
+                })}
+
+              {searchFinished && (
+                <Grid container className='gridFileSelect'>
+                  <Grid item>
+                    <label htmlFor='contained-button-file'>
+                      <Input
+                        type='file'
+                        id='contained-button-file'
+                        onChange={changeHandler}
+                      />
+                      <Button variant='contained' component='span'>
+                        {isFilePicked
+                          ? selectedFile.name
+                          : "Selecionar arquivo"}
+                      </Button>
+                    </label>
+                  </Grid>
+                  <Grid item>
+                    {isFilePicked && (
+                      <Button
+                        className='botaoUpload'
+                        color='primary'
+                        onClick={() => addDocument()}
+                      >
+                        Salvar no historico
+                      </Button>
+                    )}
+                  </Grid>
+                </Grid>
+              )}
               {searchFinished && vacinas[0] === 0 && (
                 <Button
                   className='botaoVacina'
@@ -450,34 +493,6 @@ function App() {
                 >
                   Aplicar Vacina
                 </Button>
-              )}
-              {searchFinished && (
-              <Grid container>
-                <Grid item>
-                  <label htmlFor="contained-button-file">
-                    <Input
-                      type='file'
-                      id="contained-button-file"
-                      onChange={changeHandler}
-                    />
-                    <Button
-                      variant="contained"
-                      component="span"
-                    >
-                      { isFilePicked ? selectedFile.name : "Selecionar arquivo" }
-                    </Button>
-                  </label>
-                </Grid>
-                <Grid item>
-                  <Button
-                    className='botaoUpload'
-                    color='primary'
-                    onClick={() => addDocument()}
-                  >
-                    Salvar no historico
-                  </Button>
-                </Grid>
-              </Grid>
               )}
               {searchFinished && vacinas[0] !== 0 && vacinas[1] === 0 && (
                 <Button
