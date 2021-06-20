@@ -1,7 +1,7 @@
 import { I18n } from "aws-amplify";
 import { Translations } from "@aws-amplify/ui-components";
 
-I18n.putVocabulariesForLanguage("pt-BR", {
+I18n.putVocabulariesForLanguage("es", {
   [Translations.SIGN_IN_HEADER_TEXT]: "Passaporte Covid Cidadão",
   [Translations.SIGN_IN_ACTION]: "Entrar",
   [Translations.USERNAME_LABEL]: "Usuário *",
